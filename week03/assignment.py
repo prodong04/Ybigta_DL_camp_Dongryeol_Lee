@@ -186,6 +186,7 @@ class MNISTClassificationModel(nn.Module):
         super(MNISTClassificationModel, self).__init__()
 
         # Convolutional Layers
+        # VGG Like 깊은 모델을 만들어보려 했으나, 학습률이 높지 않았음. -> 합성곱 층은 2개!
         self.conv1 = Conv2d(in_channels=1, out_channels=32, kernel_size=3, stride=1, padding=1)
         self.relu1 = nn.ReLU()
         # self.conv1_1 = Conv2d(in_channels=16, out_channels=16, kernel_size=3, stride=1, padding=1)
@@ -225,7 +226,6 @@ class MNISTClassificationModel(nn.Module):
         x = self.relu3(x)
         x = self.fc2(x)
 
-        # Apply softmax to get probabilities
         return x
 
 
