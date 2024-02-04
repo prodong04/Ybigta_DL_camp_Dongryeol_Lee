@@ -1,7 +1,8 @@
 import argparse
 import logging
 import os
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
@@ -79,13 +80,16 @@ if __name__ == '__main__':
     console_handler.setLevel(logging.DEBUG)      # 원하는 로그 레벨 설정
     console_handler.setFormatter(logging.Formatter(log_format))  # 로그 포맷 설정
     logger.addHandler(console_handler)
-
+    lst = []
+    x = []
+    y = []
     for epoch in range(args.epoch):
         logger.info(f'Training epoch {epoch}')
         model.train()
         train_loss = 0
+        #그래프를 위해 리스트 생성
+        lst.append(epoch+1)
         train_acc = 0
-
         for i, (x, y) in enumerate(tqdm(train_loader)):
             x, y = x.to(device), y.to(device)
             optimizer.zero_grad()
@@ -98,6 +102,9 @@ if __name__ == '__main__':
         train_loss /= len(train_loader)
         train_acc /= len(train_loader.dataset)
         logger.info(f'epoch {epoch} = Train Score {train_acc*100:.4f}%)')
+        sns.lineplot(x=x, y=y, color='blue', linestyle='--', linewidth=2)
+        plt.title('Chart Title')  # Set the chart title
+        plt.show()  
 
         model.eval()
         val_loss = 0
@@ -109,11 +116,29 @@ if __name__ == '__main__':
                 pred = model(x)
                 loss = criterion(pred, y)
                 val_loss += loss.item()
+                y.append(loss.item())
                 val_acc += (pred.argmax(1) == y).sum().item()
         val_loss /= len(val_loader)
         val_acc /= len(val_loader.dataset)
         logger.info(f'epoch {epoch} = Val score {val_acc * 100:.4f}%')
         
         torch.save(model.state_dict(), f'./save/{args.model}_{args.epoch}_{args.batch}_{args.learning_rate}/epoch_{epoch}.pt')
-
+        x.append(train_loss)
+        y.append(val_loss)
     print(f'Epoch {epoch} | Train Loss {train_loss:.4f} | Train Acc {train_acc:.4f} | Val Loss {val_loss:.4f} | Val Acc {val_acc:.4f}')
+    # Separate plots for train_loss and val_loss
+    plt.subplot(2, 1, 1)
+    plt.plot(lst, x, label='train_loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Train Loss')
+    plt.legend()
+
+    plt.subplot(2, 1, 2)
+    plt.plot(lst, y, label='val_loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Validation Loss')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+

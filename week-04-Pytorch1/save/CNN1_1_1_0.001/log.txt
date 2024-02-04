@@ -1,1 +1,9 @@
 2024-02-04 15:56:00,099:INFO:Training epoch 0
+2024-02-04 16:03:49,069:INFO:epoch 0 = Train Loss 3.0006)
+2024-02-04 16:03:49,070:INFO:Validating epoch 0
+2024-02-04 16:04:12,778:INFO:epoch 0 = Val Loss 2.9899
+2024-02-04 16:14:11,538:INFO:Training epoch 0
+2024-02-04 16:22:09,589:INFO:epoch 0 = Train Loss 2.9943)
+2024-02-04 16:22:09,591:INFO:Validating epoch 0
+2024-02-04 16:22:32,633:INFO:epoch 0 = Val Loss 2.9899
+2024-02-05 03:37:56,710:INFO:Training epoch 0
