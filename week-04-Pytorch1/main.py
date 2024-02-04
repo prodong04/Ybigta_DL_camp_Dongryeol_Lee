@@ -97,7 +97,7 @@ if __name__ == '__main__':
             train_acc += (pred.argmax(1) == y).sum().item()
         train_loss /= len(train_loader)
         train_acc /= len(train_loader.dataset)
-        logger.info(f'epoch {epoch} = Train Score {train_score*100:.4f})')
+        logger.info(f'epoch {epoch} = Train Score {train_acc*100:.4f})')
 
         model.eval()
         val_loss = 0
