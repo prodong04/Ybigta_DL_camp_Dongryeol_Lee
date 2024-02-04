@@ -97,7 +97,7 @@ if __name__ == '__main__':
             train_acc += (pred.argmax(1) == y).sum().item()
         train_loss /= len(train_loader)
         train_acc /= len(train_loader.dataset)
-        logger.info(f'epoch {epoch} = Train Score {train_acc*100:.4f})')
+        logger.info(f'epoch {epoch} = Train Score {train_acc*100:.4f}%)')
 
         model.eval()
         val_loss = 0
@@ -112,7 +112,7 @@ if __name__ == '__main__':
                 val_acc += (pred.argmax(1) == y).sum().item()
         val_loss /= len(val_loader)
         val_acc /= len(val_loader.dataset)
-        logger.info(f'epoch {epoch} = Val score {val_acc * 100:.4f}')
+        logger.info(f'epoch {epoch} = Val score {val_acc * 100:.4f}%')
         
         torch.save(model.state_dict(), f'./save/{args.model}_{args.epoch}_{args.batch}_{args.learning_rate}/epoch_{epoch}.pt')
 
