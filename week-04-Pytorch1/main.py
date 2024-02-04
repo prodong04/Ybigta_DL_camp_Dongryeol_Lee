@@ -7,7 +7,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 from torch.optim import Adam
 from torchvision import transforms as T
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from dataset import FoodDataset
 from model import vanillaCNN, vanillaCNN2, VGG19
@@ -97,7 +97,7 @@ if __name__ == '__main__':
             train_acc += (pred.argmax(1) == y).sum().item()
         train_loss /= len(train_loader)
         train_acc /= len(train_loader.dataset)
-        logger.info(f'epoch {epoch} = Train Loss {train_loss:.4f})')
+        logger.info(f'epoch {epoch} = Train Score {train_score*100:.4f})')
 
         model.eval()
         val_loss = 0
@@ -112,8 +112,8 @@ if __name__ == '__main__':
                 val_acc += (pred.argmax(1) == y).sum().item()
         val_loss /= len(val_loader)
         val_acc /= len(val_loader.dataset)
-        logger.info(f'epoch {epoch} = Val Loss {val_loss:.4f}')
-
+        logger.info(f'epoch {epoch} = Val score {val_acc * 100:.4f}')
+        
         torch.save(model.state_dict(), f'./save/{args.model}_{args.epoch}_{args.batch}_{args.learning_rate}/epoch_{epoch}.pt')
 
     print(f'Epoch {epoch} | Train Loss {train_loss:.4f} | Train Acc {train_acc:.4f} | Val Loss {val_loss:.4f} | Val Acc {val_acc:.4f}')
