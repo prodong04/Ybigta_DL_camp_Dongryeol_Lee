@@ -81,8 +81,8 @@ if __name__ == '__main__':
     console_handler.setFormatter(logging.Formatter(log_format))  # 로그 포맷 설정
     logger.addHandler(console_handler)
     lst = []
-    x = []
-    y = []
+    train_lst = []
+    val_lst = []
     for epoch in range(args.epoch):
         logger.info(f'Training epoch {epoch}')
         model.train()
@@ -120,20 +120,19 @@ if __name__ == '__main__':
         logger.info(f'epoch {epoch} = Val score {val_acc * 100:.4f}%')
         
         torch.save(model.state_dict(), f'./save/{args.model}_{args.epoch}_{args.batch}_{args.learning_rate}/epoch_{epoch}.pt')
-        x.append(train_loss)
-        y.append(val_loss)
+        train_lst.append(train_loss)
+        val_lst.append(val_loss)
     print(f'Epoch {epoch} | Train Loss {train_loss:.4f} | Train Acc {train_acc:.4f} | Val Loss {val_loss:.4f} | Val Acc {val_acc:.4f}')
     # Separate plots for train_loss and val_loss
-    x_cpu = x.cpu().numpy
-    y_cpu = y.cpu().numpy
+
     plt.subplot(2, 1, 1)
-    plt.plot(lst, x_cpu, label='train_loss')
+    plt.plot(lst, train_lst, label='train_loss')
     plt.xlabel('Epoch')
     plt.ylabel('Train Loss')
     plt.legend()
 
     plt.subplot(2, 1, 2)
-    plt.plot(lst, y_cpu, label='val_loss')
+    plt.plot(lst, val_lst, label='val_loss')
     plt.xlabel('Epoch')
     plt.ylabel('Validation Loss')
     plt.legend()
