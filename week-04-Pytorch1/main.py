@@ -102,9 +102,7 @@ if __name__ == '__main__':
         train_loss /= len(train_loader)
         train_acc /= len(train_loader.dataset)
         logger.info(f'epoch {epoch} = Train Score {train_acc*100:.4f}%)')
-        sns.lineplot(x=x, y=y, color='blue', linestyle='--', linewidth=2)
-        plt.title('Chart Title')  # Set the chart title
-        plt.show()  
+        
 
         model.eval()
         val_loss = 0
@@ -127,14 +125,16 @@ if __name__ == '__main__':
         y.append(val_loss)
     print(f'Epoch {epoch} | Train Loss {train_loss:.4f} | Train Acc {train_acc:.4f} | Val Loss {val_loss:.4f} | Val Acc {val_acc:.4f}')
     # Separate plots for train_loss and val_loss
+    x_cpu = x.cpu().numpy
+    y_cpu = y.cpu().numpy
     plt.subplot(2, 1, 1)
-    plt.plot(lst, x, label='train_loss')
+    plt.plot(lst, x_cpu, label='train_loss')
     plt.xlabel('Epoch')
     plt.ylabel('Train Loss')
     plt.legend()
 
     plt.subplot(2, 1, 2)
-    plt.plot(lst, y, label='val_loss')
+    plt.plot(lst, y_cpu, label='val_loss')
     plt.xlabel('Epoch')
     plt.ylabel('Validation Loss')
     plt.legend()
