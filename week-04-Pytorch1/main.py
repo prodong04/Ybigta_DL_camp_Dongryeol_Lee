@@ -114,7 +114,6 @@ if __name__ == '__main__':
                 pred = model(x)
                 loss = criterion(pred, y)
                 val_loss += loss.item()
-                y.append(loss.item())
                 val_acc += (pred.argmax(1) == y).sum().item()
         val_loss /= len(val_loader)
         val_acc /= len(val_loader.dataset)
